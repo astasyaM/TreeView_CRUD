@@ -43,7 +43,7 @@
             this.tsmУдалитьVolunteer = new System.Windows.Forms.ToolStripMenuItem();
             this.ctmEvents = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.добавитьToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.изменитьToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmИзменитьEvents = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmУдалитьEvents = new System.Windows.Forms.ToolStripMenuItem();
             this.ctmType.SuspendLayout();
@@ -142,7 +142,7 @@
             // 
             this.ctmEvents.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.добавитьToolStripMenuItem1,
-            this.изменитьToolStripMenuItem1,
+            this.tsmИзменитьEvents,
             this.toolStripMenuItem3,
             this.tsmУдалитьEvents});
             this.ctmEvents.Name = "ctmEvents";
@@ -154,11 +154,12 @@
             this.добавитьToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.добавитьToolStripMenuItem1.Text = "Добавить..";
             // 
-            // изменитьToolStripMenuItem1
+            // tsmИзменитьEvents
             // 
-            this.изменитьToolStripMenuItem1.Name = "изменитьToolStripMenuItem1";
-            this.изменитьToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
-            this.изменитьToolStripMenuItem1.Text = "Изменить...";
+            this.tsmИзменитьEvents.Name = "tsmИзменитьEvents";
+            this.tsmИзменитьEvents.Size = new System.Drawing.Size(180, 22);
+            this.tsmИзменитьEvents.Text = "Изменить...";
+            this.tsmИзменитьEvents.Click += new System.EventHandler(this.tsmИзменитьEvents_Click);
             // 
             // toolStripMenuItem3
             // 
@@ -204,7 +205,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmУдалитьVolunteer;
         private System.Windows.Forms.ContextMenuStrip ctmEvents;
         private System.Windows.Forms.ToolStripMenuItem добавитьToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem изменитьToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem tsmИзменитьEvents;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem tsmУдалитьEvents;
     }

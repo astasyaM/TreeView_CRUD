@@ -230,13 +230,64 @@ namespace TreeView_CRUD
             using (var con = new MySqlConnection(cs))
             {
                 con.Open();
-                var cmd = new MySqlCommand(@"DELETE FROM `volunteers` WHERE volunteers.EventID = @eventID", con);
+                var cmd = new MySqlCommand(@"DELETE FROM `events` WHERE events.EventID = @eventID", con);
 
                 cmd.Parameters.AddWithValue("@eventID", node.ID);
 
                 cmd.ExecuteNonQuery();
 
                 node.Remove();
+            }
+        }
+
+        private void tsmИзменитьEvents_Click(object sender, EventArgs e)
+        {
+            var cs = ConfigurationManager.ConnectionStrings["Volunteers"].ConnectionString;
+            var frm = new EditEventForm();
+
+            TreeNodeID node = treeView.SelectedNode as TreeNodeID;
+            if (node == null)
+            {
+                MessageBox.Show("Выберите событие из списка.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            using (var con = new MySqlConnection(cs))
+            {
+                con.Open();
+
+                var query = "SELECT * FROM events WHERE EventID = @ID";
+                using (var cmd = new MySqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@ID", node.ID);
+
+                    using (var dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            frm.EventTitle = dr["Title"].ToString();
+                            frm.EventDescription = dr["Description"].ToString();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Событие не найдено.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    var cmdUpdate = new MySqlCommand(@"UPDATE `events` SET `Title`=@title,`Description`=@description WHERE EVENTS.EventID = @ID", con);
+
+
+                    cmdUpdate.Parameters.AddWithValue("@title", frm.EventTitle);
+                    cmdUpdate.Parameters.AddWithValue("@description", frm.EventDescription);
+                    cmdUpdate.Parameters.AddWithValue("@ID", node.ID);
+
+                    cmdUpdate.ExecuteNonQuery();
+
+                    node.Text = $"{frm.EventTitle}";
+                }
             }
         }
     }
