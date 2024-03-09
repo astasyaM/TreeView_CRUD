@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace TreeView_CRUD
 {
@@ -59,7 +60,7 @@ namespace TreeView_CRUD
                 {
                     while (dr.Read())
                     {
-                        var node = new TreeNode(dr["Title"].ToString());
+                        var node = new TreeNodeID(dr["Title"].ToString(), (int)dr["EventID"]);
                         parent.Nodes.Add(node);
                         LoadVolunteers(node, (int)dr["EventID"]);
                     }
@@ -92,19 +93,7 @@ namespace TreeView_CRUD
 
         private void удалитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var cs = ConfigurationManager.ConnectionStrings["Volunteers"].ConnectionString;
 
-            int id = 0;
-
-            using (var con = new MySqlConnection(cs))
-            {
-                con.Open();
-                var cmd = new MySqlCommand(@"DELETE FROM `types` WHERE types.TypeID = @typeID", con);
-
-                cmd.Parameters.AddWithValue("@typeID", id);
-
-                cmd.ExecuteNonQuery();
-            }
         }
 
         private void tsiИзменитьВолонтёра_Click(object sender, EventArgs e)
@@ -160,5 +149,73 @@ namespace TreeView_CRUD
             
         }
 
+        private void tsmУдалитьVolunteer_Click(object sender, EventArgs e)
+        {
+            var cs = ConfigurationManager.ConnectionStrings["Volunteers"].ConnectionString;
+
+            TreeNodeID node = treeView.SelectedNode as TreeNodeID;
+            if (node == null)
+            {
+                MessageBox.Show("Выберите волонтёра из списка.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            using (var con = new MySqlConnection(cs))
+            {
+                con.Open();
+                var cmd = new MySqlCommand(@"DELETE FROM `volunteers` WHERE volunteers.VolunteerID = @volunteerID", con);
+
+                cmd.Parameters.AddWithValue("@volunteerID", node.ID);
+
+                cmd.ExecuteNonQuery();
+
+                node.Remove();
+            }
+        }
+
+        private void tsmДобавитьVolunteer_Click(object sender, EventArgs e)
+        {
+            var cs = ConfigurationManager.ConnectionStrings["Volunteers"].ConnectionString;
+            var frm = new EditVolunteerForm();
+
+            TreeNodeID node = treeView.SelectedNode as TreeNodeID;
+            if (node == null)
+            {
+                MessageBox.Show("Выберите волонтёра из списка.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            TreeNodeID nodeParent = treeView.SelectedNode.Parent as TreeNodeID;
+
+            using (var con = new MySqlConnection(cs))
+            {
+                con.Open();
+
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    var cmdUpdate = new MySqlCommand(@"INSERT INTO `volunteers`(`EventID`, `Name`, `Surname`) VALUES (@eventID, @name, @surname)", con);
+
+
+                    cmdUpdate.Parameters.AddWithValue("@name", frm.VolunteerName);
+                    cmdUpdate.Parameters.AddWithValue("@surname", frm.VolunteerSurname);
+                    cmdUpdate.Parameters.AddWithValue("@eventID", nodeParent.ID);
+
+                    cmdUpdate.ExecuteNonQuery();
+
+                    var cmd = new MySqlCommand(@"SELECT CONCAT(LEFT(Name, 1), '. ', Surname) AS FullName, volunteers.VolunteerID FROM `volunteers` ORDER BY VolunteerID DESC LIMIT 1", con);
+
+                    using (var dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            var newNode = new TreeNodeID(dr["FullName"].ToString(), (int)dr["VolunteerID"]);
+                            newNode.ContextMenuStrip = ctmVolunteer;
+                            nodeParent.Nodes.Add(newNode);
+                        }
+                    }
+                }
+            }
+
+
+        }
     }
 }
