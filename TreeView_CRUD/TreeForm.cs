@@ -144,7 +144,16 @@ namespace TreeView_CRUD
 
                 if (frm.ShowDialog() == DialogResult.OK)
                 {
+                    var cmdUpdate = new MySqlCommand(@"UPDATE `volunteers` SET `Name`=@name,`Surname`=@surname WHERE VOLUNTEERS.VolunteerID = @ID", con);
 
+
+                    cmdUpdate.Parameters.AddWithValue("@name", frm.VolunteerName);
+                    cmdUpdate.Parameters.AddWithValue("@surname", frm.VolunteerSurname);
+                    cmdUpdate.Parameters.AddWithValue("@ID", node.ID);
+
+                    cmdUpdate.ExecuteNonQuery();
+
+                    node.Text = $"{frm.VolunteerName[0]}. {frm.VolunteerSurname}";
                 }
             }
 
