@@ -166,7 +166,7 @@ namespace TreeView_CRUD
                 }
             }
 
-            
+
         }
 
         private void tsmУдалитьVolunteer_Click(object sender, EventArgs e)
@@ -437,6 +437,88 @@ namespace TreeView_CRUD
                     cmdUpdate.ExecuteNonQuery();
 
                     node.Text = $"{frm.TypeTitle}";
+                }
+            }
+        }
+
+        private void добавитьСобытиеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var cs = ConfigurationManager.ConnectionStrings["Volunteers"].ConnectionString;
+            var frm = new EditEventForm();
+
+            TreeNodeID node = treeView.SelectedNode as TreeNodeID;
+            if (node == null)
+            {
+                MessageBox.Show("Выберите тип событий из списка.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            using (var con = new MySqlConnection(cs))
+            {
+                con.Open();
+
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    var cmdUpdate = new MySqlCommand(@"INSERT INTO `Events`(`EventTypeID`, `Title`, `Description`) VALUES (@eventTypeID, @title, @description)", con);
+
+                    cmdUpdate.Parameters.AddWithValue("@title", frm.EventTitle);
+                    cmdUpdate.Parameters.AddWithValue("@description", frm.EventDescription);
+                    cmdUpdate.Parameters.AddWithValue("@eventTypeID", node.ID);
+
+                    cmdUpdate.ExecuteNonQuery();
+
+                    var cmd = new MySqlCommand(@"SELECT events.Title, events.EventID FROM `events` ORDER BY EventID DESC LIMIT 1", con);
+
+                    using (var dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            var newNode = new TreeNodeID(dr["Title"].ToString(), (int)dr["EventID"]);
+                            newNode.ContextMenuStrip = ctmEvents;
+                            node.Nodes.Add(newNode);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void добавитьВолонтёраToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var cs = ConfigurationManager.ConnectionStrings["Volunteers"].ConnectionString;
+            var frm = new EditVolunteerForm();
+
+            TreeNodeID node = treeView.SelectedNode as TreeNodeID;
+            if (node == null)
+            {
+                MessageBox.Show("Выберите событие из списка.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            using (var con = new MySqlConnection(cs))
+            {
+                con.Open();
+
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    var cmdUpdate = new MySqlCommand(@"INSERT INTO `volunteers`(`EventID`, `Name`, `Surname`) VALUES (@eventID, @name, @surname)", con);
+
+                    cmdUpdate.Parameters.AddWithValue("@name", frm.VolunteerName);
+                    cmdUpdate.Parameters.AddWithValue("@surname", frm.VolunteerSurname);
+                    cmdUpdate.Parameters.AddWithValue("@eventID", node.ID);
+
+                    cmdUpdate.ExecuteNonQuery();
+
+                    var cmd = new MySqlCommand(@"SELECT CONCAT(LEFT(Name, 1), '. ', Surname) AS FullName, volunteers.VolunteerID FROM `volunteers` ORDER BY VolunteerID DESC LIMIT 1", con);
+
+                    using (var dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            var newNode = new TreeNodeID(dr["FullName"].ToString(), (int)dr["VolunteerID"]);
+                            newNode.ContextMenuStrip = ctmVolunteer;
+                            node.Nodes.Add(newNode);
+                        }
+                    }
                 }
             }
         }
