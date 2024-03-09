@@ -372,5 +372,54 @@ namespace TreeView_CRUD
                 }
             }
         }
+
+        private void tsmИзменитьTypes_Click(object sender, EventArgs e)
+        {
+            var cs = ConfigurationManager.ConnectionStrings["Volunteers"].ConnectionString;
+            var frm = new EditTypeForm();
+
+            TreeNodeID node = treeView.SelectedNode as TreeNodeID;
+            if (node == null)
+            {
+                MessageBox.Show("Выберите тип событий из списка.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            using (var con = new MySqlConnection(cs))
+            {
+                con.Open();
+
+                var query = "SELECT * FROM types WHERE TypeID = @ID";
+                using (var cmd = new MySqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@ID", node.ID);
+
+                    using (var dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            frm.TypeTitle = dr["Type"].ToString();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Тип события не найден.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    var cmdUpdate = new MySqlCommand(@"UPDATE `types` SET `Type`=@type WHERE TYPES.TypeID = @ID", con);
+
+
+                    cmdUpdate.Parameters.AddWithValue("@type", frm.TypeTitle);
+                    cmdUpdate.Parameters.AddWithValue("@ID", node.ID);
+
+                    cmdUpdate.ExecuteNonQuery();
+
+                    node.Text = $"{frm.TypeTitle}";
+                }
+            }
+        }
     }
 }

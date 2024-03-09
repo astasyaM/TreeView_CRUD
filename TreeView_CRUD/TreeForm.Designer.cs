@@ -33,7 +33,7 @@
             this.btnLoad = new System.Windows.Forms.Button();
             this.ctmType = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmДобавитьType = new System.Windows.Forms.ToolStripMenuItem();
-            this.изменитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmИзменитьTypes = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.удалитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ctmVolunteer = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -72,7 +72,7 @@
             // 
             this.ctmType.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmДобавитьType,
-            this.изменитьToolStripMenuItem,
+            this.tsmИзменитьTypes,
             this.toolStripMenuItem1,
             this.удалитьToolStripMenuItem});
             this.ctmType.Name = "ctmType";
@@ -85,11 +85,12 @@
             this.tsmДобавитьType.Text = "Добавить...";
             this.tsmДобавитьType.Click += new System.EventHandler(this.tsmДобавитьType_Click);
             // 
-            // изменитьToolStripMenuItem
+            // tsmИзменитьTypes
             // 
-            this.изменитьToolStripMenuItem.Name = "изменитьToolStripMenuItem";
-            this.изменитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.изменитьToolStripMenuItem.Text = "Изменить...";
+            this.tsmИзменитьTypes.Name = "tsmИзменитьTypes";
+            this.tsmИзменитьTypes.Size = new System.Drawing.Size(180, 22);
+            this.tsmИзменитьTypes.Text = "Изменить...";
+            this.tsmИзменитьTypes.Click += new System.EventHandler(this.tsmИзменитьTypes_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -197,7 +198,7 @@
         private System.Windows.Forms.Button btnLoad;
         private System.Windows.Forms.ContextMenuStrip ctmType;
         private System.Windows.Forms.ToolStripMenuItem tsmДобавитьType;
-        private System.Windows.Forms.ToolStripMenuItem изменитьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmИзменитьTypes;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem удалитьToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip ctmVolunteer;
