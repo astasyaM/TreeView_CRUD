@@ -94,7 +94,26 @@ namespace TreeView_CRUD
 
         private void удалитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            var cs = ConfigurationManager.ConnectionStrings["Volunteers"].ConnectionString;
 
+            TreeNodeID node = treeView.SelectedNode as TreeNodeID;
+            if (node == null)
+            {
+                MessageBox.Show("Выберите тип события из списка.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            using (var con = new MySqlConnection(cs))
+            {
+                con.Open();
+                var cmd = new MySqlCommand(@"DELETE FROM `types` WHERE types.TypeID = @typeID", con);
+
+                cmd.Parameters.AddWithValue("@typeID", node.ID);
+
+                cmd.ExecuteNonQuery();
+
+                node.Remove();
+            }
         }
 
         private void tsiИзменитьВолонтёра_Click(object sender, EventArgs e)
