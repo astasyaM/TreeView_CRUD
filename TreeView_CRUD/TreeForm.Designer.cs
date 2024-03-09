@@ -41,8 +41,14 @@
             this.tsiИзменитьВолонтёра = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmУдалитьVolunteer = new System.Windows.Forms.ToolStripMenuItem();
+            this.ctmEvents = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.добавитьToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.изменитьToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmУдалитьEvents = new System.Windows.Forms.ToolStripMenuItem();
             this.ctmType.SuspendLayout();
             this.ctmVolunteer.SuspendLayout();
+            this.ctmEvents.SuspendLayout();
             this.SuspendLayout();
             // 
             // treeView
@@ -104,33 +110,67 @@
             this.toolStripMenuItem2,
             this.tsmУдалитьVolunteer});
             this.ctmVolunteer.Name = "ctmVolunteer";
-            this.ctmVolunteer.Size = new System.Drawing.Size(181, 98);
+            this.ctmVolunteer.Size = new System.Drawing.Size(138, 76);
             // 
             // tsmДобавитьVolunteer
             // 
             this.tsmДобавитьVolunteer.Name = "tsmДобавитьVolunteer";
-            this.tsmДобавитьVolunteer.Size = new System.Drawing.Size(180, 22);
+            this.tsmДобавитьVolunteer.Size = new System.Drawing.Size(137, 22);
             this.tsmДобавитьVolunteer.Text = "Добавить...";
             this.tsmДобавитьVolunteer.Click += new System.EventHandler(this.tsmДобавитьVolunteer_Click);
             // 
             // tsiИзменитьВолонтёра
             // 
             this.tsiИзменитьВолонтёра.Name = "tsiИзменитьВолонтёра";
-            this.tsiИзменитьВолонтёра.Size = new System.Drawing.Size(180, 22);
+            this.tsiИзменитьВолонтёра.Size = new System.Drawing.Size(137, 22);
             this.tsiИзменитьВолонтёра.Text = "Изменить...";
             this.tsiИзменитьВолонтёра.Click += new System.EventHandler(this.tsiИзменитьВолонтёра_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(134, 6);
             // 
             // tsmУдалитьVolunteer
             // 
             this.tsmУдалитьVolunteer.Name = "tsmУдалитьVolunteer";
-            this.tsmУдалитьVolunteer.Size = new System.Drawing.Size(180, 22);
+            this.tsmУдалитьVolunteer.Size = new System.Drawing.Size(137, 22);
             this.tsmУдалитьVolunteer.Text = "Удалить";
             this.tsmУдалитьVolunteer.Click += new System.EventHandler(this.tsmУдалитьVolunteer_Click);
+            // 
+            // ctmEvents
+            // 
+            this.ctmEvents.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.добавитьToolStripMenuItem1,
+            this.изменитьToolStripMenuItem1,
+            this.toolStripMenuItem3,
+            this.tsmУдалитьEvents});
+            this.ctmEvents.Name = "ctmEvents";
+            this.ctmEvents.Size = new System.Drawing.Size(181, 98);
+            // 
+            // добавитьToolStripMenuItem1
+            // 
+            this.добавитьToolStripMenuItem1.Name = "добавитьToolStripMenuItem1";
+            this.добавитьToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.добавитьToolStripMenuItem1.Text = "Добавить..";
+            // 
+            // изменитьToolStripMenuItem1
+            // 
+            this.изменитьToolStripMenuItem1.Name = "изменитьToolStripMenuItem1";
+            this.изменитьToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.изменитьToolStripMenuItem1.Text = "Изменить...";
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(177, 6);
+            // 
+            // tsmУдалитьEvents
+            // 
+            this.tsmУдалитьEvents.Name = "tsmУдалитьEvents";
+            this.tsmУдалитьEvents.Size = new System.Drawing.Size(180, 22);
+            this.tsmУдалитьEvents.Text = "Удалить";
+            this.tsmУдалитьEvents.Click += new System.EventHandler(this.tsmУдалитьEvents_Click);
             // 
             // TreeForm
             // 
@@ -143,6 +183,7 @@
             this.Text = "Form1";
             this.ctmType.ResumeLayout(false);
             this.ctmVolunteer.ResumeLayout(false);
+            this.ctmEvents.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -161,6 +202,11 @@
         private System.Windows.Forms.ToolStripMenuItem tsiИзменитьВолонтёра;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem tsmУдалитьVolunteer;
+        private System.Windows.Forms.ContextMenuStrip ctmEvents;
+        private System.Windows.Forms.ToolStripMenuItem добавитьToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem изменитьToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem tsmУдалитьEvents;
     }
 }
 

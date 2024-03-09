@@ -35,7 +35,7 @@ namespace TreeView_CRUD
                 {
                     while (dr.Read())
                     {
-                        var node = new TreeNode(dr["Type"].ToString());
+                        var node = new TreeNodeID(dr["Type"].ToString(), (int)dr["TypeID"]);
                         node.ContextMenuStrip = ctmType;
                         treeView.Nodes.Add(node);
                         LoadEvents(node, (int)dr["TypeID"]);
@@ -61,6 +61,7 @@ namespace TreeView_CRUD
                     while (dr.Read())
                     {
                         var node = new TreeNodeID(dr["Title"].ToString(), (int)dr["EventID"]);
+                        node.ContextMenuStrip = ctmEvents;
                         parent.Nodes.Add(node);
                         LoadVolunteers(node, (int)dr["EventID"]);
                     }
@@ -194,7 +195,6 @@ namespace TreeView_CRUD
                 {
                     var cmdUpdate = new MySqlCommand(@"INSERT INTO `volunteers`(`EventID`, `Name`, `Surname`) VALUES (@eventID, @name, @surname)", con);
 
-
                     cmdUpdate.Parameters.AddWithValue("@name", frm.VolunteerName);
                     cmdUpdate.Parameters.AddWithValue("@surname", frm.VolunteerSurname);
                     cmdUpdate.Parameters.AddWithValue("@eventID", nodeParent.ID);
@@ -214,8 +214,30 @@ namespace TreeView_CRUD
                     }
                 }
             }
+        }
 
+        private void tsmУдалитьEvents_Click(object sender, EventArgs e)
+        {
+            var cs = ConfigurationManager.ConnectionStrings["Volunteers"].ConnectionString;
 
+            TreeNodeID node = treeView.SelectedNode as TreeNodeID;
+            if (node == null)
+            {
+                MessageBox.Show("Выберите событие из списка.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            using (var con = new MySqlConnection(cs))
+            {
+                con.Open();
+                var cmd = new MySqlCommand(@"DELETE FROM `volunteers` WHERE volunteers.EventID = @eventID", con);
+
+                cmd.Parameters.AddWithValue("@eventID", node.ID);
+
+                cmd.ExecuteNonQuery();
+
+                node.Remove();
+            }
         }
     }
 }
