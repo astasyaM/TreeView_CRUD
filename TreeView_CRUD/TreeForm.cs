@@ -290,5 +290,87 @@ namespace TreeView_CRUD
                 }
             }
         }
+
+        private void tsmДобавитьEvents_Click(object sender, EventArgs e)
+        {
+            var cs = ConfigurationManager.ConnectionStrings["Volunteers"].ConnectionString;
+            var frm = new EditEventForm();
+
+            TreeNodeID node = treeView.SelectedNode as TreeNodeID;
+            if (node == null)
+            {
+                MessageBox.Show("Выберите событие из списка.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            TreeNodeID nodeParent = treeView.SelectedNode.Parent as TreeNodeID;
+
+            using (var con = new MySqlConnection(cs))
+            {
+                con.Open();
+
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    var cmdUpdate = new MySqlCommand(@"INSERT INTO `Events`(`EventTypeID`, `Title`, `Description`) VALUES (@eventTypeID, @title, @description)", con);
+
+                    cmdUpdate.Parameters.AddWithValue("@title", frm.EventTitle);
+                    cmdUpdate.Parameters.AddWithValue("@description", frm.EventDescription);
+                    cmdUpdate.Parameters.AddWithValue("@eventTypeID", nodeParent.ID);
+
+                    cmdUpdate.ExecuteNonQuery();
+
+                    var cmd = new MySqlCommand(@"SELECT events.Title, events.EventID FROM `events` ORDER BY EventID DESC LIMIT 1", con);
+
+                    using (var dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            var newNode = new TreeNodeID(dr["Title"].ToString(), (int)dr["EventID"]);
+                            newNode.ContextMenuStrip = ctmEvents;
+                            nodeParent.Nodes.Add(newNode);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void tsmДобавитьType_Click(object sender, EventArgs e)
+        {
+            var cs = ConfigurationManager.ConnectionStrings["Volunteers"].ConnectionString;
+            var frm = new EditTypeForm();
+
+            TreeNodeID node = treeView.SelectedNode as TreeNodeID;
+            if (node == null)
+            {
+                MessageBox.Show("Выберите тип мероприятия из списка.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            TreeNodeID nodeParent = treeView.SelectedNode.Parent as TreeNodeID;
+
+            using (var con = new MySqlConnection(cs))
+            {
+                con.Open();
+
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    var cmdUpdate = new MySqlCommand(@"INSERT INTO `Types`(`Type`) VALUES (@type)", con);
+
+                    cmdUpdate.Parameters.AddWithValue("@type", frm.TypeTitle);
+
+                    cmdUpdate.ExecuteNonQuery();
+
+                    var cmd = new MySqlCommand(@"SELECT types.Type, types.TypeID FROM `types` ORDER BY TypeID DESC LIMIT 1", con);
+
+                    using (var dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            var newNode = new TreeNodeID(dr["Type"].ToString(), (int)dr["typeID"]);
+                            newNode.ContextMenuStrip = ctmType;
+                            treeView.Nodes.Add(newNode);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

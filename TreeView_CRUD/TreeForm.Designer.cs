@@ -32,7 +32,7 @@
             this.treeView = new System.Windows.Forms.TreeView();
             this.btnLoad = new System.Windows.Forms.Button();
             this.ctmType = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.добавитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmДобавитьType = new System.Windows.Forms.ToolStripMenuItem();
             this.изменитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.удалитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -42,7 +42,7 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmУдалитьVolunteer = new System.Windows.Forms.ToolStripMenuItem();
             this.ctmEvents = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.добавитьToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmДобавитьEvents = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmИзменитьEvents = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmУдалитьEvents = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,34 +71,35 @@
             // ctmType
             // 
             this.ctmType.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.добавитьToolStripMenuItem,
+            this.tsmДобавитьType,
             this.изменитьToolStripMenuItem,
             this.toolStripMenuItem1,
             this.удалитьToolStripMenuItem});
             this.ctmType.Name = "ctmType";
-            this.ctmType.Size = new System.Drawing.Size(138, 76);
+            this.ctmType.Size = new System.Drawing.Size(181, 98);
             // 
-            // добавитьToolStripMenuItem
+            // tsmДобавитьType
             // 
-            this.добавитьToolStripMenuItem.Name = "добавитьToolStripMenuItem";
-            this.добавитьToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
-            this.добавитьToolStripMenuItem.Text = "Добавить...";
+            this.tsmДобавитьType.Name = "tsmДобавитьType";
+            this.tsmДобавитьType.Size = new System.Drawing.Size(180, 22);
+            this.tsmДобавитьType.Text = "Добавить...";
+            this.tsmДобавитьType.Click += new System.EventHandler(this.tsmДобавитьType_Click);
             // 
             // изменитьToolStripMenuItem
             // 
             this.изменитьToolStripMenuItem.Name = "изменитьToolStripMenuItem";
-            this.изменитьToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.изменитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.изменитьToolStripMenuItem.Text = "Изменить...";
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(134, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
             // 
             // удалитьToolStripMenuItem
             // 
             this.удалитьToolStripMenuItem.Name = "удалитьToolStripMenuItem";
-            this.удалитьToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.удалитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.удалитьToolStripMenuItem.Text = "Удалить";
             this.удалитьToolStripMenuItem.Click += new System.EventHandler(this.удалитьToolStripMenuItem_Click);
             // 
@@ -141,35 +142,36 @@
             // ctmEvents
             // 
             this.ctmEvents.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.добавитьToolStripMenuItem1,
+            this.tsmДобавитьEvents,
             this.tsmИзменитьEvents,
             this.toolStripMenuItem3,
             this.tsmУдалитьEvents});
             this.ctmEvents.Name = "ctmEvents";
-            this.ctmEvents.Size = new System.Drawing.Size(181, 98);
+            this.ctmEvents.Size = new System.Drawing.Size(138, 76);
             // 
-            // добавитьToolStripMenuItem1
+            // tsmДобавитьEvents
             // 
-            this.добавитьToolStripMenuItem1.Name = "добавитьToolStripMenuItem1";
-            this.добавитьToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
-            this.добавитьToolStripMenuItem1.Text = "Добавить..";
+            this.tsmДобавитьEvents.Name = "tsmДобавитьEvents";
+            this.tsmДобавитьEvents.Size = new System.Drawing.Size(137, 22);
+            this.tsmДобавитьEvents.Text = "Добавить..";
+            this.tsmДобавитьEvents.Click += new System.EventHandler(this.tsmДобавитьEvents_Click);
             // 
             // tsmИзменитьEvents
             // 
             this.tsmИзменитьEvents.Name = "tsmИзменитьEvents";
-            this.tsmИзменитьEvents.Size = new System.Drawing.Size(180, 22);
+            this.tsmИзменитьEvents.Size = new System.Drawing.Size(137, 22);
             this.tsmИзменитьEvents.Text = "Изменить...";
             this.tsmИзменитьEvents.Click += new System.EventHandler(this.tsmИзменитьEvents_Click);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(134, 6);
             // 
             // tsmУдалитьEvents
             // 
             this.tsmУдалитьEvents.Name = "tsmУдалитьEvents";
-            this.tsmУдалитьEvents.Size = new System.Drawing.Size(180, 22);
+            this.tsmУдалитьEvents.Size = new System.Drawing.Size(137, 22);
             this.tsmУдалитьEvents.Text = "Удалить";
             this.tsmУдалитьEvents.Click += new System.EventHandler(this.tsmУдалитьEvents_Click);
             // 
@@ -194,7 +196,7 @@
         private System.Windows.Forms.TreeView treeView;
         private System.Windows.Forms.Button btnLoad;
         private System.Windows.Forms.ContextMenuStrip ctmType;
-        private System.Windows.Forms.ToolStripMenuItem добавитьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmДобавитьType;
         private System.Windows.Forms.ToolStripMenuItem изменитьToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem удалитьToolStripMenuItem;
@@ -204,7 +206,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem tsmУдалитьVolunteer;
         private System.Windows.Forms.ContextMenuStrip ctmEvents;
-        private System.Windows.Forms.ToolStripMenuItem добавитьToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem tsmДобавитьEvents;
         private System.Windows.Forms.ToolStripMenuItem tsmИзменитьEvents;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem tsmУдалитьEvents;
