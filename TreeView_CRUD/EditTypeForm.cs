@@ -26,8 +26,13 @@ namespace TreeView_CRUD
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.OK;
-            Close();
+            if (txtType.Text != string.Empty)
+            {
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+            else
+                MessageBox.Show("Заполните все поля!");
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

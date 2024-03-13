@@ -40,8 +40,13 @@ namespace TreeView_CRUD
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.OK;
-            Close();
+            if (txtName.Text != string.Empty && txtSurname.Text != string.Empty)
+            {
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+            else
+                MessageBox.Show("Заполните все поля!");
         }
     }
 }
