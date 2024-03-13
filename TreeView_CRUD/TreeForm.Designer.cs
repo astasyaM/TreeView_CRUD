@@ -33,8 +33,9 @@
             this.btnLoad = new System.Windows.Forms.Button();
             this.ctmType = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmДобавитьType = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmИзменитьTypes = new System.Windows.Forms.ToolStripMenuItem();
+            this.добавитьСобытиеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmИзменитьTypes = new System.Windows.Forms.ToolStripMenuItem();
             this.удалитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ctmVolunteer = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmДобавитьVolunteer = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,11 +44,10 @@
             this.tsmУдалитьVolunteer = new System.Windows.Forms.ToolStripMenuItem();
             this.ctmEvents = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmДобавитьEvents = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmИзменитьEvents = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsmУдалитьEvents = new System.Windows.Forms.ToolStripMenuItem();
-            this.добавитьСобытиеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.добавитьВолонтёраToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmИзменитьEvents = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmУдалитьEvents = new System.Windows.Forms.ToolStripMenuItem();
             this.ctmType.SuspendLayout();
             this.ctmVolunteer.SuspendLayout();
             this.ctmEvents.SuspendLayout();
@@ -55,10 +55,15 @@
             // 
             // treeView
             // 
+            this.treeView.AllowDrop = true;
             this.treeView.Location = new System.Drawing.Point(12, 12);
             this.treeView.Name = "treeView";
             this.treeView.Size = new System.Drawing.Size(392, 368);
             this.treeView.TabIndex = 0;
+            this.treeView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.treeView_ItemDrag_1);
+            this.treeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView_NodeMouseClick);
+            this.treeView.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeView_DragDrop_1);
+            this.treeView.DragEnter += new System.Windows.Forms.DragEventHandler(this.treeView_DragEnter_1);
             // 
             // btnLoad
             // 
@@ -66,7 +71,7 @@
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(112, 36);
             this.btnLoad.TabIndex = 1;
-            this.btnLoad.Text = "Загрузить";
+            this.btnLoad.Text = "Load";
             this.btnLoad.UseVisualStyleBackColor = true;
             this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
             // 
@@ -88,22 +93,29 @@
             this.tsmДобавитьType.Text = "Добавить тип мероприятий...";
             this.tsmДобавитьType.Click += new System.EventHandler(this.tsmДобавитьType_Click);
             // 
-            // tsmИзменитьTypes
+            // добавитьСобытиеToolStripMenuItem
             // 
-            this.tsmИзменитьTypes.Name = "tsmИзменитьTypes";
-            this.tsmИзменитьTypes.Size = new System.Drawing.Size(180, 22);
-            this.tsmИзменитьTypes.Text = "Изменить...";
-            this.tsmИзменитьTypes.Click += new System.EventHandler(this.tsmИзменитьTypes_Click);
+            this.добавитьСобытиеToolStripMenuItem.Name = "добавитьСобытиеToolStripMenuItem";
+            this.добавитьСобытиеToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.добавитьСобытиеToolStripMenuItem.Text = "Добавить событие...";
+            this.добавитьСобытиеToolStripMenuItem.Click += new System.EventHandler(this.добавитьСобытиеToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(232, 6);
+            // 
+            // tsmИзменитьTypes
+            // 
+            this.tsmИзменитьTypes.Name = "tsmИзменитьTypes";
+            this.tsmИзменитьTypes.Size = new System.Drawing.Size(235, 22);
+            this.tsmИзменитьTypes.Text = "Изменить...";
+            this.tsmИзменитьTypes.Click += new System.EventHandler(this.tsmИзменитьTypes_Click);
             // 
             // удалитьToolStripMenuItem
             // 
             this.удалитьToolStripMenuItem.Name = "удалитьToolStripMenuItem";
-            this.удалитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.удалитьToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
             this.удалитьToolStripMenuItem.Text = "Удалить";
             this.удалитьToolStripMenuItem.Click += new System.EventHandler(this.удалитьToolStripMenuItem_Click);
             // 
@@ -161,38 +173,31 @@
             this.tsmДобавитьEvents.Text = "Добавить событие...";
             this.tsmДобавитьEvents.Click += new System.EventHandler(this.tsmДобавитьEvents_Click);
             // 
-            // tsmИзменитьEvents
-            // 
-            this.tsmИзменитьEvents.Name = "tsmИзменитьEvents";
-            this.tsmИзменитьEvents.Size = new System.Drawing.Size(137, 22);
-            this.tsmИзменитьEvents.Text = "Изменить...";
-            this.tsmИзменитьEvents.Click += new System.EventHandler(this.tsmИзменитьEvents_Click);
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(134, 6);
-            // 
-            // tsmУдалитьEvents
-            // 
-            this.tsmУдалитьEvents.Name = "tsmУдалитьEvents";
-            this.tsmУдалитьEvents.Size = new System.Drawing.Size(137, 22);
-            this.tsmУдалитьEvents.Text = "Удалить";
-            this.tsmУдалитьEvents.Click += new System.EventHandler(this.tsmУдалитьEvents_Click);
-            // 
-            // добавитьСобытиеToolStripMenuItem
-            // 
-            this.добавитьСобытиеToolStripMenuItem.Name = "добавитьСобытиеToolStripMenuItem";
-            this.добавитьСобытиеToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.добавитьСобытиеToolStripMenuItem.Text = "Добавить событие...";
-            this.добавитьСобытиеToolStripMenuItem.Click += new System.EventHandler(this.добавитьСобытиеToolStripMenuItem_Click);
-            // 
             // добавитьВолонтёраToolStripMenuItem
             // 
             this.добавитьВолонтёраToolStripMenuItem.Name = "добавитьВолонтёраToolStripMenuItem";
             this.добавитьВолонтёраToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.добавитьВолонтёраToolStripMenuItem.Text = "Добавить волонтёра...";
             this.добавитьВолонтёраToolStripMenuItem.Click += new System.EventHandler(this.добавитьВолонтёраToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(193, 6);
+            // 
+            // tsmИзменитьEvents
+            // 
+            this.tsmИзменитьEvents.Name = "tsmИзменитьEvents";
+            this.tsmИзменитьEvents.Size = new System.Drawing.Size(196, 22);
+            this.tsmИзменитьEvents.Text = "Изменить...";
+            this.tsmИзменитьEvents.Click += new System.EventHandler(this.tsmИзменитьEvents_Click);
+            // 
+            // tsmУдалитьEvents
+            // 
+            this.tsmУдалитьEvents.Name = "tsmУдалитьEvents";
+            this.tsmУдалитьEvents.Size = new System.Drawing.Size(196, 22);
+            this.tsmУдалитьEvents.Text = "Удалить";
+            this.tsmУдалитьEvents.Click += new System.EventHandler(this.tsmУдалитьEvents_Click);
             // 
             // TreeForm
             // 

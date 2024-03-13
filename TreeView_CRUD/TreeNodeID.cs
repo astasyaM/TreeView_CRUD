@@ -10,10 +10,12 @@ namespace TreeView_CRUD
     public class TreeNodeID: TreeNode
     {
         public int ID {  get; set; }
+        public int NodeLevel { get; set; }
 
-        public TreeNodeID(string text, int id): base(text)
+        public TreeNodeID(string text, int id, int level): base(text)
         {
             ID = id;
+            NodeLevel = level;
         }
     }
 }

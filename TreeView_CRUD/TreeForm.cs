@@ -1,15 +1,19 @@
 ﻿using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Tls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
+using System.Data.Common;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using TreeView_CRUD;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace TreeView_CRUD
@@ -35,7 +39,7 @@ namespace TreeView_CRUD
                 {
                     while (dr.Read())
                     {
-                        var node = new TreeNodeID(dr["Type"].ToString(), (int)dr["TypeID"]);
+                        var node = new TreeNodeID(dr["Type"].ToString(), (int)dr["TypeID"], 1);
                         node.ContextMenuStrip = ctmType;
                         treeView.Nodes.Add(node);
                         LoadEvents(node, (int)dr["TypeID"]);
@@ -60,7 +64,7 @@ namespace TreeView_CRUD
                 {
                     while (dr.Read())
                     {
-                        var node = new TreeNodeID(dr["Title"].ToString(), (int)dr["EventID"]);
+                        var node = new TreeNodeID(dr["Title"].ToString(), (int)dr["EventID"], 2);
                         node.ContextMenuStrip = ctmEvents;
                         parent.Nodes.Add(node);
                         LoadVolunteers(node, (int)dr["EventID"]);
@@ -84,7 +88,7 @@ namespace TreeView_CRUD
                 {
                     while (dr.Read())
                     {
-                        var node = new TreeNodeID(dr["FullName"].ToString(), (int)dr["VolunteerID"]);
+                        var node = new TreeNodeID(dr["FullName"].ToString(), (int)dr["VolunteerID"], 3);
                         node.ContextMenuStrip = ctmVolunteer;
                         parent.Nodes.Add(node);
                     }
@@ -226,7 +230,7 @@ namespace TreeView_CRUD
                     {
                         while (dr.Read())
                         {
-                            var newNode = new TreeNodeID(dr["FullName"].ToString(), (int)dr["VolunteerID"]);
+                            var newNode = new TreeNodeID(dr["FullName"].ToString(), (int)dr["VolunteerID"], 3);
                             newNode.ContextMenuStrip = ctmVolunteer;
                             nodeParent.Nodes.Add(newNode);
                         }
@@ -343,7 +347,7 @@ namespace TreeView_CRUD
                     {
                         while (dr.Read())
                         {
-                            var newNode = new TreeNodeID(dr["Title"].ToString(), (int)dr["EventID"]);
+                            var newNode = new TreeNodeID(dr["Title"].ToString(), (int)dr["EventID"], 2);
                             newNode.ContextMenuStrip = ctmEvents;
                             nodeParent.Nodes.Add(newNode);
                         }
@@ -383,7 +387,7 @@ namespace TreeView_CRUD
                     {
                         while (dr.Read())
                         {
-                            var newNode = new TreeNodeID(dr["Type"].ToString(), (int)dr["typeID"]);
+                            var newNode = new TreeNodeID(dr["Type"].ToString(), (int)dr["typeID"], 1);
                             newNode.ContextMenuStrip = ctmType;
                             treeView.Nodes.Add(newNode);
                         }
@@ -473,7 +477,7 @@ namespace TreeView_CRUD
                     {
                         while (dr.Read())
                         {
-                            var newNode = new TreeNodeID(dr["Title"].ToString(), (int)dr["EventID"]);
+                            var newNode = new TreeNodeID(dr["Title"].ToString(), (int)dr["EventID"], 2);
                             newNode.ContextMenuStrip = ctmEvents;
                             node.Nodes.Add(newNode);
                         }
@@ -514,13 +518,70 @@ namespace TreeView_CRUD
                     {
                         while (dr.Read())
                         {
-                            var newNode = new TreeNodeID(dr["FullName"].ToString(), (int)dr["VolunteerID"]);
+                            var newNode = new TreeNodeID(dr["FullName"].ToString(), (int)dr["VolunteerID"], 3);
                             newNode.ContextMenuStrip = ctmVolunteer;
                             node.Nodes.Add(newNode);
                         }
                     }
                 }
             }
+        }
+
+        private void treeView_ItemDrag_1(object sender, ItemDragEventArgs e)
+        {
+            DoDragDrop(e.Item, DragDropEffects.Move);
+        }
+
+        private void treeView_DragEnter_1(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Move;
+        }
+
+        private bool ContainsNode(TreeNode node1, TreeNode node2)
+        {
+            if (node2 == null || node2.Parent == null)
+                return false;
+            if (node2.Parent.Equals(node1))
+                return true;
+            return ContainsNode(node1, node2.Parent);
+        }
+
+        private void treeView_DragDrop_1(object sender, DragEventArgs e)
+        {
+            var cs = ConfigurationManager.ConnectionStrings["Volunteers"].ConnectionString;
+
+            TreeNodeID draggedNode = (TreeNodeID)e.Data.GetData(typeof(TreeNodeID));
+            Point targetPoint = treeView.PointToClient(new Point(e.X, e.Y));
+            TreeNodeID targetNode = (TreeNodeID)treeView.GetNodeAt(targetPoint);
+
+            if (!draggedNode.Equals(targetNode) && !ContainsNode(draggedNode, targetNode) && draggedNode.NodeLevel == 3)
+            {
+                draggedNode.Remove();
+
+                if (targetNode == null)
+                    treeView.Nodes.Add(draggedNode);
+                else
+                    targetNode.Nodes.Add(draggedNode);
+                targetNode.Expand();
+
+                using (var con = new MySqlConnection(cs))
+                {
+                    con.Open();
+
+                    if (draggedNode.NodeLevel == 3)
+                    {
+                        var cmdUpdate = new MySqlCommand(@"UPDATE `volunteers` SET `EventID`=@idEvent WHERE volunteers.VolunteerID = @IDVolunteer", con);
+                        cmdUpdate.Parameters.AddWithValue("@idEvent", targetNode.ID);
+                        cmdUpdate.Parameters.AddWithValue("@IDVolunteer", draggedNode.ID);
+                        cmdUpdate.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+
+        private void treeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            treeView.SelectedNode = e.Node;
         }
     }
 }
